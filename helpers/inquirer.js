@@ -74,26 +74,26 @@ const leerInput = async(message) =>{
     return desc;
 }
 
-const menuBorrador = async( tareas = []) => {
+const showPlaces = async( places = []) => {
 
-    const choices = tareas.map( (tarea, i) =>{
+    const choices = places.map( (place, i) =>{
         const indx = (i + 1).toString().blue;
         return {
-                value: tarea.id,
-                name: `${ indx } - ${ tarea.desc }`
+                value: place.id,
+                name: `${ indx } - ${ place.name }`
             }
     });
 
     choices.unshift({
-        value: '0',
-        name: `${'0'.blue} - Cancelar`
+        value: 0,
+        name: `${'0'.blue} - Cancelar `
     });
 
     const questions = [
         {
             type: 'list',
             name: 'id',
-            message: "Borrar tarea",
+            message: "Seleccione el lugar",
             choices
         }
     ];
@@ -103,53 +103,51 @@ const menuBorrador = async( tareas = []) => {
     
 }
 
-const mostrarChecklist = async( tareas = []) => {
+// const mostrarChecklist = async( tareas = []) => {
 
-    const choices = tareas.map( (tarea, i) =>{
-        const indx = (i + 1).toString().blue;
-        return {
-                value: tarea.id,
-                name: `${ indx } - ${ tarea.desc }`,
-                checked: ( tarea.completado ) ? true : false
-            }
-    });
+//     const choices = tareas.map( (tarea, i) =>{
+//         const indx = (i + 1).toString().blue;
+//         return {
+//                 value: tarea.id,
+//                 name: `${ indx } - ${ tarea.desc }`,
+//                 checked: ( tarea.completado ) ? true : false
+//             }
+//     });
 
-    const question = [
-        {
-            type: 'checkbox',
-            name: 'ids',
-            message: "Seleccione la tarea",
-            choices
-        }
-    ];
+//     const question = [
+//         {
+//             type: 'checkbox',
+//             name: 'ids',
+//             message: "Seleccione la tarea",
+//             choices
+//         }
+//     ];
 
-    const { ids } = await inquirer.prompt(question);
-    return ids;
+//     const { ids } = await inquirer.prompt(question);
+//     return ids;
     
-}
+// }
 
-const confirm = async() => {
+// const confirm = async() => {
 
-    const questions = [
-        {
-            type: 'confirm',
-            name: 'ok',
-            message: `¿Deseas ${ 'ELIMINAR'.red } la tarea?.`,
+//     const questions = [
+//         {
+//             type: 'confirm',
+//             name: 'ok',
+//             message: `¿Deseas ${ 'ELIMINAR'.red } la tarea?.`,
             
-        }
-    ];
+//         }
+//     ];
 
-    const { ok } = await inquirer.prompt(questions);
-    return ok;
-}
+//     const { ok } = await inquirer.prompt(questions);
+//     return ok;
+// }
 
 module.exports = {
     inquirerMenu, 
     pausa, 
     leerInput, 
-    menuBorrador,
-    mostrarChecklist,
-    confirm
+    showPlaces    
 }
 
 

@@ -1,24 +1,32 @@
 require('colors');
 
-const { leerInput } = require('../helpers/inquirer');
-
+const { leerInput, showPlaces } = require('../helpers/inquirer');
+const { getOpenWeather } = require('./getOpenWeather');
 
 const placeInformation = async (search) =>{
 
     const place = await leerInput('Ciudad: ');
-    // console.log({place});
-    await search.city(place);
+    const places = await search.city(place);
+    const id = await showPlaces(places);
+
+    if (id === 0) return
+
+    const selectPlace = places.find( p => p.id === id)
+    const openWeather = await getOpenWeather(selectPlace.latitud, selectPlace.longitud );
 
     console.log('----------------------'.blue);
     console.log('Información del lugar: '.bgBlue);
     console.log('----------------------'.blue);
-    console.log('- Ciudad: ', );
-    console.log('- Latitud: ', );
-    console.log('- Longitud: ', );
-    console.log('- Temperatura actual (°C): ', );
-    console.log('- Temp Minima: ', );
-    console.log('- Temp Máxima: ', );
+    console.log(`${'-'.blue} Ciudad:         `, selectPlace.name.yellow);
+    console.log(`${'-'.blue} Latitud:        `, selectPlace.latitud);
+    console.log(`${'-'.blue} Longitud:       `, selectPlace.longitud);
+    console.log(`${'-'.blue} Temperatura °C: `, openWeather.temp);
+    console.log(`${'-'.blue} Temp Minima:    `, openWeather.temp_min);
+    console.log(`${'-'.blue} Temp Máxima:    `, openWeather.temp_max);
+    console.log(`${'-'.blue} Humedad:        `, `${openWeather.humidity.toString()}%`.yellow);
+    console.log(`${'-'.blue} Estado de clima:`, openWeather.desc.toString().toUpperCase().yellow);
+    console.log();
 
 }
 
-module.exports = { placeInformation } ;
+module.exports = { placeInformation };

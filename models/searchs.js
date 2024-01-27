@@ -6,14 +6,12 @@ class Searchs {
 
     constructor(){
 
-
     }
 
     async city(place = ''){
 
-        // console.log('City: ', place)
         try {             
-            const intance = axios.create({
+            const instance = axios.create({
                 baseURL: `https://api.mapbox.com/geocoding/v5/mapbox.places/${place}.json`,
                 params: {
                     'access_token': process.env.MAPBOX_KEY,
@@ -22,18 +20,23 @@ class Searchs {
                 }
             });
 
-            const resp = await intance.get();
+            const resp = await instance.get();
 
             console.log(resp.data);
+            return resp.data.features.map( place => ({
+                id: place.id,
+                name: place.place_name,
+                longitud: place.center[0],
+                latitud: place.center[1], 
+
+
+            }))
+
         } catch (error) {
-            console.log('ERROR en la busqueda de la ciudad'.red);
+            console.error('ERROR en la busqueda de la ciudad');
             return [];
         }
-
-        return [];
-        
     }
-
 }
 
 module.exports = Searchs;
