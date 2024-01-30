@@ -15,9 +15,9 @@ const getOpenWeather = async (lat, lon) =>{
         });
 
         const resp = await instance.get();
-        console.log(resp.data)
+
         const {weather, main} = resp.data;
-        console.log(weather, main);
+
         return {
             desc: weather[0].description,
             temp: main.temp,

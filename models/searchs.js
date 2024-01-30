@@ -5,10 +5,10 @@ class Searchs {
     history = [];
 
     constructor(){
-
+        this.history = [];
     }
 
-    async city(place = ''){
+    async searchCity(place){
 
         try {             
             const instance = axios.create({
@@ -22,20 +22,21 @@ class Searchs {
 
             const resp = await instance.get();
 
-            console.log(resp.data);
             return resp.data.features.map( place => ({
                 id: place.id,
                 name: place.place_name,
                 longitud: place.center[0],
                 latitud: place.center[1], 
-
-
             }))
 
         } catch (error) {
             console.error('ERROR en la busqueda de la ciudad');
             return [];
         }
+    }
+
+    addHistory (selectPlace){
+        this.history.unshift(selectPlace);
     }
 }
 

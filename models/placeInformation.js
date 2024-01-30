@@ -2,16 +2,21 @@ require('colors');
 
 const { leerInput, showPlaces } = require('../helpers/inquirer');
 const { getOpenWeather } = require('./getOpenWeather');
+const { saveLog } = require('./log');
 
 const placeInformation = async (search) =>{
 
     const place = await leerInput('Ciudad: ');
-    const places = await search.city(place);
+    const places = await search.searchCity(place);
     const id = await showPlaces(places);
 
     if (id === 0) return
 
     const selectPlace = places.find( p => p.id === id)
+    search.addHistory(selectPlace.name)
+
+    await saveLog(search);
+
     const openWeather = await getOpenWeather(selectPlace.latitud, selectPlace.longitud );
 
     console.log('----------------------'.blue);
@@ -26,7 +31,7 @@ const placeInformation = async (search) =>{
     console.log(`${'-'.blue} Humedad:        `, `${openWeather.humidity.toString()}%`.yellow);
     console.log(`${'-'.blue} Estado de clima:`, openWeather.desc.toString().toUpperCase().yellow);
     console.log();
-
+    
 }
 
 module.exports = { placeInformation };
